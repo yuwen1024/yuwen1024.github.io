@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>git的基本使用</title>
+    <url>/2020/03/26/git%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/</url>
+    <content><![CDATA[<h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><p>git:简单的来说就是一个版本控制系统，通过一系列的操作，将我们的项目代码放在git的服务器上面。<br>github：是基于B/S架构的版本控制系统，我们通过浏览器来展示和操作我们的项目数据，服务器还是git服务器。<br>git客户端，是基于C/S架构的版本控制系统，在安装git客户端后，通过命令行或者图形界面进行操作。<br>本文主要讲的是通过git客户端的命令行来操作。</p>
+<h3 id="准备阶段"><a href="#准备阶段" class="headerlink" title="准备阶段"></a>准备阶段</h3><ol>
+<li><p>安装客户端</p>
+<ul>
+<li>百度搜素git，即可进入git官网，下载安装即可。</li>
+<li>只有安装了git客户端，才能够使用git命令。</li>
+<li>git客户端提供三种操作工具<ul>
+<li>git bash 是基于linux命令的控制台</li>
+<li>git cmd 是基于windows命令的控制台</li>
+<li>git gui 是基于图像化界面的控制台</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>命令操作</p>
+<ul>
+<li><p>使用命令将客户端和git账号关联</p>
+<ul>
+<li>git config –global user.name “用户名”</li>
+<li>git config –global user.email “邮箱”</li>
+<li>注意：以上使用global命令，表示是全局配置，该配置生效之后，以后就不需要手动关联了。</li>
+</ul>
+</li>
+<li><p>然后让git服务器对该git客户端进行授权，该授权是基于ssh协议，在github上配置公用密匙。</p>
+<ul>
+<li><p>ssh-keygen -t rsa -C “github邮箱地址”</p>
+</li>
+<li><p>控制台会输出.ssh文件夹和id_rsa的位置（注意：.ssh是隐藏文件夹）</p>
+<ul>
+<li><img src="https://github.com/yuwen1024/myImages/blob/master/ssh%E7%A0%81%E7%9A%84%E4%BD%8D%E7%BD%AE.jpg" alt="图片"></li>
+</ul>
+</li>
+<li><p>将id_rsa中的内容全部复制到github上。具体设置如下</p>
+<ul>
+<li><p>打开setting</p>
+<ul>
+<li><img src="https://github.com/yuwen1024/myImages/blob/master/%E8%AE%BE%E7%BD%AEssh1.jpg" alt="图片"></li>
+</ul>
+</li>
+<li><p>打开SSH</p>
+<ul>
+<li><img src="https://github.com/yuwen1024/myImages/blob/master/%E8%AE%BE%E7%BD%AEssh2.jpg" alt="图片"></li>
+</ul>
+</li>
+<li><p>新建SSH key</p>
+<ul>
+<li><img src="https://github.com/yuwen1024/myImages/blob/master/%E8%AE%BE%E7%BD%AEssh3.jpg" alt="图片"></li>
+</ul>
+</li>
+<li><p>title是说明这个密匙是干嘛用的，随便写。key里面放入id_rsa的数据</p>
+<ul>
+<li><img src="https://github.com/yuwen1024/myImages/blob/master/%E8%AE%BE%E7%BD%AEssh4.jpg" alt="图片"></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>这样，git客户端和服务器就关联上了，我们就可以使用git客户端来上传和克隆项目文件了</p>
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="使用git来上传本地文件"><a href="#使用git来上传本地文件" class="headerlink" title="使用git来上传本地文件"></a>使用git来上传本地文件</h3><h4 id="上传流程"><a href="#上传流程" class="headerlink" title="上传流程"></a>上传流程</h4><ul>
+<li>先将要上传的文件放入缓存区中，然后从缓存区中上传到git仓库</li>
+<li>流程图如下<ul>
+<li><img src="https://github.com/yuwen1024/myImages/blob/master/git%E4%B8%8A%E4%BC%A0%E6%B5%81%E7%A8%8B%E5%9B%BE.jpg" alt="图片"></li>
+</ul>
+</li>
+<li>先建立本地仓库，说白了就是磁盘里面的文件夹</li>
+<li>然后使用git bash定位到该文件夹，最简单的方法就是在文件夹里面直接打开git bash</li>
+<li>使用 git init命令建立缓存区<ul>
+<li>git init命令会在本地仓库中建立一个.git的文件夹，该文件夹里面存放着项目的所有版本信息</li>
+</ul>
+</li>
+<li>从本地仓库到缓存区<ul>
+<li>使用 git add 文件名（单一文件）或者 git add * （所有文件）来将文件放入缓存区中</li>
+<li>使用 git commit -m “版本信息的解释”</li>
+</ul>
+</li>
+<li>从缓存区到git服务器<ul>
+<li>需要在github上面建立一个仓库</li>
+<li>如果是第一次上传的话需要将本地仓库和git服务器仓库绑定起来<ul>
+<li>git remote add origin 仓库地址。这条指令会将本地仓库和git仓库绑定起来</li>
+<li>git push -u origin master。将缓存区的文件上传到服务器仓库</li>
+</ul>
+</li>
+<li>第二次以上上传就比较方便,直接使用 git push即可</li>
+</ul>
+</li>
+</ul>
+<h3 id="git其他基本命令"><a href="#git其他基本命令" class="headerlink" title="git其他基本命令"></a>git其他基本命令</h3><ul>
+<li>克隆文件<ul>
+<li>使用 git clone 仓库地址，来克隆该仓库中的所有文件</li>
+</ul>
+</li>
+<li>更新项目<ul>
+<li>使用 git pull命令来更新项目</li>
+</ul>
+</li>
+<li>恢复文件<ul>
+<li>如果本地仓库中文件误删或者误操作了，可以从缓存区中恢复，前提是文件已经放入了缓存区了也就是git add *</li>
+<li>使用 git checkout命令即可</li>
+</ul>
+</li>
+<li>查看当前本地仓库和缓存区中文件的区别<ul>
+<li>使用 git diff命令，控制台会展示出哪个文件被修改了，修改的地方是什么</li>
+</ul>
+</li>
+<li>查看已经提交到缓存区的历史版本<ul>
+<li>git log命令会展示出所有已经提交到缓存区的版本</li>
+</ul>
+</li>
+<li>恢复文件到指定的版本<ul>
+<li>git reset –hard + 版本号。版本号在git log中会有</li>
+</ul>
+</li>
+<li>其他命令<ul>
+<li>clear 清屏操作   </li>
+</ul>
+</li>
+</ul>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
+<li>git是一个非常方便的代码托管平台，不管是个人还是公司团体，git都能有效的控制版本。github界面很漂亮，看的很舒服。熟悉了git的基本指令，我们就能很好的使用git工具了。</li>
+</ul>
+]]></content>
+  </entry>
+  <entry>
+    <title>Java的面向对象特性</title>
+    <url>/2020/03/26/Java%E7%9A%84%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%89%B9%E6%80%A7/</url>
+    <content><![CDATA[<h3 id="面向对象设计"><a href="#面向对象设计" class="headerlink" title="面向对象设计"></a>面向对象设计</h3><p>一切皆对象，软件系统的运行就是依靠对象和对象之间传递消息来推进，所以设计软件，就是设计对象和对象之间的关系。而对象是一组状态和一系列行为的组合体。状态是对象的内在特性，行为是对象的外在特性。通过类来描述一类对象。</p>
+<h3 id="封装"><a href="#封装" class="headerlink" title="封装"></a>封装</h3><p>我们将数据和方法包装到一个类中，并隐藏具体的实现称为封装。封装的结果是同时带有特征和行为的数据类型。</p>
+<p>java中对封装的支持：访问控制修饰符（public、protected、default、private）。我们通过使用访问控制修饰符来实现封装。只将想要暴露的地方暴露给用户，其他地方都隐藏起来。按照约定暴露的地方不予修改（如果已经被用户使用了），其他的地方是用户访问不到的，那么就可以需求重构和修改。</p>
+<p>java中的访问控制权限 ，首先说明一点，为什么java提供了4个访问权限修饰符。如果只需要暴露和隐藏，那么只需要两个即可。我在前面提到用户，用户也就是使用者。但是用户也是相对的。对一个类来说，使用它的其他类就是该类的用户，对一个框架来说，使用了该框架的程序也是用户。所以针对不同的用户级别，java设计了四个访问修饰符来确保安全性，从小到类，大到框架都有设置</p>
+<p>public:接口访问权限，顾名思义这就是暴露的部分，如果一个类的成员有该修饰符修饰，那么所有用户均可访问该成员。</p>
+<p>private：私人访问权限，这个修饰符隐藏了成员（包括变量和方法），对所有用户均隐藏，仅在类的内部访问。</p>
+<p>(default)：包访问权限，java中提供包机制，不仅将具有内在逻辑的类包装在一起，也解决了另人头疼的命名空间问题。包访问权限，对同一个包中的用户来说是可以访问的，对于其他包中用户是隐藏的。</p>
+<p>protected：继承访问权限，继承访问权限为了继承机制设计的修饰符。子类是父类的用户，这个用户有些特殊，他不像其他用户一般，继承的耦合性很强。如果一个类中的成员，不希望其他包中的用户访问，但是希望子类能够访问。如果子类在本包中其实包访问权限就够。但在其他包中显然不行，而接口访问权限范围太广也不行，所以使用继承访问权限。使得在其他包中的子类也能够访问父类的成员。</p>
+<p>java设计的四个访问修饰符，覆盖了方方面面，不同的用户级别都能够实现隐藏效果。</p>
+<p>封装提供了安全性，再也不用担忧用户将我的成员修改了，也不用担心重构时候哪些地方被用户使用了，哪些地方没有使用，因为已经知道暴露的是什么，隐藏的是什么了。</p>
+<h3 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h3><p>继承是面向对象设计的一个重要特性，非常强大。如果仅仅体现在代码复用这块，那么其实继承还没组合灵活好用。继承的强大体现在子类是父类，在继承树中，子类可以作为任一层父类使用，具体体现在，将子类的对象引用当作父类的对象引用，代码体现，左父右子，将子类的对象引用赋值给父类的对象引用。这给多态特性打下了基础。</p>
+<p>java显然也提供了继承技术支持，使用extends关键字，可以表示两个类的关联关系，其他的则不需要我们考虑了，要明确一点，继承并不是将父类代码拷贝到子类中，这显然是违反了代码复用原则。其实在创建子类对象的时候，会创建一个父类的子对象，父类子对象和父类对象并没有什么区别，只不过父类子对象是在是在子类对象内部。</p>
+<p>回到封装，java通过四个关键字来保证封装的安全性，继承和一般的关联不同，所以java提供了protected关键字来解决继承中的封装问题。我们知道private的修饰的成员是不能够被子类访问的（注意：子类继承了父类的所有，往往有人用不了父类中的成员，就认为没有继承下来，其实全部都在父类子对象中，不过因为权限不够，隐藏起来了）。因为对父类来说，子类就是用户，当然不能访问私人访问权限。protected关键字就解决了子类访问父类成员的问题，不管子类在何处都能访问。</p>
+<p>###多态<br>多态是什么？<br>同一个行为的有不同的表现形式，也就是说，多态是不同的表现形式。而且只对对象的行为有意义。通俗点说就是只有对象的成员方法才能产生多态效果。</p>
+<p>java显然也提供了多态技术支持，java提供了后期绑定技术（运行期绑定技术），所谓的绑定是指将一个方法调用和方法主体关联，那么后期绑定也就是，在编译期，编译器并不知道调用的方法是关联那个方法主体。等到运行的时候根据对象类型将方法名和方法主体关联起来。</p>
+<p>第二个技术就是转型了，这一点就是继承提供的机制。左父右子这种形态，根据传入不同的子类对象，则就会调用不同的子类对象方法，从而实现多态。</p>
+<p>我们知道了java中的方法都是动态绑定的，那么我们只需要编写与父类打交道的代码就好了，但是对于static,final修饰的方法并不是动态绑定的。static用来表示与类相关，类方法是前期绑定（编译期绑定），而final修饰的方法，不仅表示不能被子类重写，也表示关闭了动态绑定。所以在接口中，我们是不能够使用final关键字的，不合符接口的设计原则。</p>
+<p>左父右子，父引用变量调用的非static和final方法（动态绑定）都是根据右边对象的类型来调相应的方法体，这就是多态的体现。</p>
+<p>所以，为什么调用类方法和成员变量只会用父类中的，因为这并没有多态。</p>
+<blockquote>
+<p>参考资料<br>《Java编程思想第四版》</p>
+</blockquote>
+]]></content>
+  </entry>
+  <entry>
+    <title>md的基本使用</title>
+    <url>/2019/04/28/md%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/</url>
+    <content><![CDATA[<h3 id="本篇介绍md的基本语法"><a href="#本篇介绍md的基本语法" class="headerlink" title="本篇介绍md的基本语法"></a>本篇介绍md的基本语法</h3><h4 id="一、md的基本介绍"><a href="#一、md的基本介绍" class="headerlink" title="一、md的基本介绍"></a>一、md的基本介绍</h4><p>md是markdown的缩写，它是一种纯文本格式的标记语言，通过简单的标记语法，使普通的文本内容具有一定的格式。<br>md编辑器推荐Atom编辑器，简单好用，使用Ctrl+Shift+M，可以预览编辑的文本。</p>
+<h4 id="二、标题"><a href="#二、标题" class="headerlink" title="二、标题"></a>二、标题</h4><p>md支持六级标题，其语法是#空格文字，有几个#就是几级标题，从大到小。<br>示例：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 这是一级标题</span><br><span class="line">## 这是二级标题</span><br><span class="line">### 这是三级标题</span><br><span class="line">#### 这是四级标题</span><br><span class="line">##### 这是五级标题</span><br><span class="line">###### 这是六级标题</span><br></pre></td></tr></table></figure>
+<p>效果:</p>
+<h1 id="这是一级标题"><a href="#这是一级标题" class="headerlink" title="这是一级标题"></a>这是一级标题</h1><h2 id="这是二级标题"><a href="#这是二级标题" class="headerlink" title="这是二级标题"></a>这是二级标题</h2><h3 id="这是三级标题"><a href="#这是三级标题" class="headerlink" title="这是三级标题"></a>这是三级标题</h3><h4 id="这是四级标题"><a href="#这是四级标题" class="headerlink" title="这是四级标题"></a>这是四级标题</h4><h5 id="这是五级标题"><a href="#这是五级标题" class="headerlink" title="这是五级标题"></a>这是五级标题</h5><h6 id="这是六级标题"><a href="#这是六级标题" class="headerlink" title="这是六级标题"></a>这是六级标题</h6><h4 id="三、字体"><a href="#三、字体" class="headerlink" title="三、字体"></a>三、字体</h4><p>介绍粗体、斜体、粗斜体、和删除线，其效果和word以及html一样<br>语法：都是在字体的左右用符号包裹     </p>
+<ul>
+<li>斜体：用一个包裹  </li>
+<li>粗体：用两个包裹  </li>
+<li>粗斜体：用三个*包裹  </li>
+<li>删除线：用两个~包裹     </li>
+</ul>
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">*这是倾斜的文字*  </span><br><span class="line">**这是加粗的文字**  </span><br><span class="line">***这是斜体加粗的文字***  </span><br><span class="line">~~这是加删除线的文字~~</span><br></pre></td></tr></table></figure>
+<p>效果：<br><em>这是倾斜的文字</em><br><strong>这是加粗的文字</strong><br><strong><em>这是斜体加粗的文字</em></strong><br><del>这是加删除线的文字</del>    </p>
+<h4 id="四、换行和首字缩进"><a href="#四、换行和首字缩进" class="headerlink" title="四、换行和首字缩进"></a>四、换行和首字缩进</h4><p>换行需要在行的末尾加上两个空格，再按回车键即可<br>首字缩进需要有三种方法：<br>　　方法一：将输入法改为全角<br>　　　全角：一个字符占两个字符<br>　　　半角：一个字符占一个字符<br>　　　对中文没有影响,英文你可以试试呗。<br>　　方法二：在前面输入下面任意一个即可，注意：分号不能丢。     </p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&amp;nbsp;或者&amp;#160;</span><br></pre></td></tr></table></figure>
+<h4 id="五、引用"><a href="#五、引用" class="headerlink" title="五、引用"></a>五、引用</h4><p>md支持嵌套引用，语法&gt;一个表示一级引用和标题类似，多少个&gt;表示几级引用，没有限制<br>示例：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;这是引用的内容</span><br><span class="line">&gt;&gt;这是引用的内容</span><br><span class="line">&gt;&gt;&gt;这是引用的内容</span><br></pre></td></tr></table></figure>
+<p>效果：</p>
+<blockquote>
+<p>这是引用的内容</p>
+<blockquote>
+<p>这是引用的内容</p>
+<blockquote>
+<p>这是引用的内容</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<h4 id="六、图片"><a href="#六、图片" class="headerlink" title="六、图片"></a>六、图片</h4><p>md同样支持在文本中插入图片<br>语法：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">![图片的alt]( 图片的url &quot;图片的title&quot;)</span><br><span class="line">图片的alt表示图片加载失败后显示出的文字</span><br><span class="line">图片的title，将鼠标放在图片上会显示出title</span><br></pre></td></tr></table></figure>
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">![图片](https:&#x2F;&#x2F;timgsa.baidu.com&#x2F;timg?image &quot;这是一张图片&quot;)</span><br></pre></td></tr></table></figure>
+<p>效果：<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://timgsa.baidu.com/timg?image" alt="图片" title="这是一张图片"></p>
+<h4 id="七、超链接"><a href="#七、超链接" class="headerlink" title="七、超链接"></a>七、超链接</h4><p>语法：和图片类似，不过为了区分，超链接前面没有!号</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[超链接名字](超链接url &quot;超链接title&quot;)</span><br></pre></td></tr></table></figure>
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[百度](https:&#x2F;&#x2F;www.baidu.com &quot;这是百度首页网址&quot;)</span><br></pre></td></tr></table></figure>
+<p>效果：<br><a href="https://www.baidu.com" target="_blank" rel="noopener" title="这是百度首页网址">百度</a></p>
+<h4 id="八、分割线"><a href="#八、分割线" class="headerlink" title="八、分割线"></a>八、分割线</h4><p>语法：三个或以上的-或者*         </p>
+<p>其区别是*上面的内容字体不变，而-上内容变成一级标题<br>示例：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">这是上面内容</span><br><span class="line">---</span><br><span class="line">这是上面内容</span><br><span class="line">***</span><br></pre></td></tr></table></figure>
+<p>效果：<br>这是上面内容</p>
+<hr>
+<p>这是上面内容</p>
+<hr>
+<h4 id="九、列表"><a href="#九、列表" class="headerlink" title="九、列表"></a>九、列表</h4><p>md同样支持有序列表和无序列表<br>有序列表：和word中一样<br>无序列表：<code>*-+中任意符号即可</code><br>示例：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">1.列表内容</span><br><span class="line">2.列表内容</span><br><span class="line">3.列表内容</span><br><span class="line">注意序号和内容之间要有空格</span><br><span class="line"></span><br><span class="line">* 列表内容</span><br><span class="line">* 列表内容</span><br><span class="line">* 列表内容</span><br></pre></td></tr></table></figure>
+<p>效果：</p>
+<ol>
+<li>列表内容</li>
+<li>列表内容</li>
+<li>列表内容</li>
+</ol>
+<ul>
+<li>列表内容</li>
+<li>列表内容</li>
+<li>列表内容   </li>
+</ul>
+<h4 id="十、列表嵌套"><a href="#十、列表嵌套" class="headerlink" title="十、列表嵌套"></a>十、列表嵌套</h4><p>语法：下级前面敲三个空格即可<br>示例：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">* 一级无序列表内容</span><br><span class="line">   * 二级无序列表内容</span><br><span class="line">   * 二级无序列表内容</span><br><span class="line">   * 二级无序列表内容</span><br></pre></td></tr></table></figure>
+<p>效果：</p>
+<ul>
+<li>一级无序列表内容<ul>
+<li>二级无序列表内容</li>
+<li>二级无序列表内容</li>
+<li>二级无序列表内容</li>
+</ul>
+</li>
+</ul>
+<h4 id="十一、代码"><a href="#十一、代码" class="headerlink" title="十一、代码"></a>十一、代码</h4><p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#96;这是一行代码&#96;</span><br><span class="line"></span><br><span class="line">&#96;&#96;&#96;java</span><br><span class="line">public void before(Method m, Object[] args, Object target) throws Throwable &#123;</span><br><span class="line">count(m);</span><br><span class="line">&#125;</span><br><span class="line">&#96;&#96;&#96;</span><br></pre></td></tr></table></figure>
+<p>效果：</p>
+<p><code>这是一行代码</code></p>
+<pre><code>public void before(Method m, Object[] args, Object target) throws Throwable {
+count(m);
+}</code></pre><p>这些都是常用的格式，上上手，很快就熟练了。</p>
+<blockquote>
+<p>《如何写md格式的文档》中的部分数据</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>工具使用</category>
+      </categories>
+      <tags>
+        <tag>md文件</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>HSSFWorkbook的基本使用</title>
+    <url>/2019/03/26/HSSFWorkbook%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/</url>
+    <content><![CDATA[<h3 id="HSSF概况"><a href="#HSSF概况" class="headerlink" title="HSSF概况"></a>HSSF概况</h3><p>HSSF接口能够处理的是MS Excel对象，通过HSSF，可以用纯Java代码来读取、写入、修改Excel文件</p>
+<h3 id="Excel表结构"><a href="#Excel表结构" class="headerlink" title="Excel表结构"></a>Excel表结构</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">HSSFWorkbook excell 文档对象介绍</span><br><span class="line">HSSFSheet excell的表单</span><br><span class="line">HSSFRow excell的行</span><br><span class="line">HSSFCell excell的格子单元</span><br><span class="line">HSSFFont excell字体</span><br><span class="line">HSSFName 名称</span><br><span class="line">HSSFDataFormat 日期格式</span><br><span class="line">在poi1.7中才有以下2项：</span><br><span class="line">HSSFHeader sheet头</span><br><span class="line">HSSFFooter sheet尾</span><br><span class="line">HSSFCellStyle cell样式</span><br><span class="line">辅助操作包括</span><br><span class="line">HSSFDateUtil 日期</span><br><span class="line">HSSFPrintSetup 打印</span><br><span class="line">HSSFErrorConstants 错误信息表</span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
+    <title>对Java中对象、类、抽象类、接口的理解</title>
+    <url>/2019/03/26/%E5%AF%B9Java%E4%B8%AD%E5%AF%B9%E8%B1%A1%E3%80%81%E7%B1%BB%E3%80%81%E6%8A%BD%E8%B1%A1%E7%B1%BB%E3%80%81%E6%8E%A5%E5%8F%A3%E7%9A%84%E7%90%86%E8%A7%A3/</url>
+    <content><![CDATA[<h3 id="类和对象"><a href="#类和对象" class="headerlink" title="类和对象"></a>类和对象</h3><p>一个对象对应一个实体，用代码来描述实体的状态和行为。而如果一切皆对象，那么由什么来决定某一类的对象的外观和行为呢，也就是对象的类型（Type）。也就是说，类是对一类具有相同外观和行为的对象的抽象。</p>
+<h3 id="先有对象还是先有类"><a href="#先有对象还是先有类" class="headerlink" title="先有对象还是先有类"></a>先有对象还是先有类</h3><p>看似是先有鸡还是先有蛋的哲学问题，其实从现实生活中发现。是先有实体的存在，然后人们将这些实体的外观和行为统一抽象概括。比如说：你我他、小明的存在。我们都被归于人这个类型，因为我们具有相似的外观和行为。</p>
+<h3 id="抽象是有层次的"><a href="#抽象是有层次的" class="headerlink" title="抽象是有层次的"></a>抽象是有层次的</h3><p>对某一类的对象的抽象程度不同，形成的类在抽象层次树中的位置不同。继上个例子。小明被概括成男人，小红被概括成女人。而小明、小红都可以被概括成人。那么男人、女人、人这三种都是对对象的抽象。可以很明显的看到其中的差异。人这个类型包含的对象的数量是男人、女人所包含的对象的数量的总和（外延）。而对对象说明的力度却小于男人、女人这两个类型（内涵）。那么显然，人这类型是处于更高层次的，是对男人、女人这两个类型进一步抽象，概括相同的外观和行为，形成人这一类型。</p>
+<h3 id="抽象类的形成"><a href="#抽象类的形成" class="headerlink" title="抽象类的形成"></a>抽象类的形成</h3><p>我们对类进行抽象之后，发现内涵变低了，无法具体的描述对象的行为，比如动物，都有个行为：吃。但是吃什么呢，不清楚。猫吃鱼，狗吃骨头，人啥都吃。所以能在动物这个类中具体的描述行为吗。是不能的。但是我们能在猫、狗、人的类型中具体的描述吃这个行为。</p>
+<p>抽象类，是对不同类型的统一特征和行为的进一步抽象。但是无法明确具体地描述这一行为。所以在java中抽象类不是能够直接new 对象的。因为具体的行为都没有，这个对象是不存在的。现实中任何实体，都有明确的特征和行为。</p>
+<h3 id="抽象类的构成"><a href="#抽象类的构成" class="headerlink" title="抽象类的构成"></a>抽象类的构成</h3><p>从上面分析，我们发现抽象类与普通类相差不多，都是对对象的抽象，只是抽象的层次不一样。所以普通类所能包含的东西，抽象类都能够包含。但是，在java中，抽象类中有些方法不能明确的描述对象的行为，用abstract进行修饰，表示这个是抽象方法，没有方法体，也就是没有具体的描述这个行为。</p>
+<h3 id="抽象类和普通类"><a href="#抽象类和普通类" class="headerlink" title="抽象类和普通类"></a>抽象类和普通类</h3><p>我们知道，一个类如果能够new一个对象，那么必须能够明确的定义对象的特征和行为。显然抽象类并不具备这个能力，他对部分的行为是不能够明确描述的。所以在java中抽象类是不能够直接new对象的。</p>
+<p>因为抽象类是对些类中的共同特征和行为的进一步抽象，所以抽象类的存在并不是和对象关联的，而是给它的子类提供部分特征和行为。同样如果子类是普通类（能够直接创建对象的类），那么必须要实现它的抽象方法（给出明确的行为定义）。所以在java中抽象类是不能使用private修饰类，因为它的存在是要给子类提供一些属性和方法。</p>
+<h3 id="接口的意义"><a href="#接口的意义" class="headerlink" title="接口的意义"></a>接口的意义</h3><p>上面我都没有提到接口，接口虽然也是对对象或者类的抽象，但是它是独立于抽象层次树的一个概念。</p>
+<p>从现实世界的角度来说，各行各业都有他的标准，比如插板，在国内都有个国标。国标一旦定下来，所有生产厂家必须按照这个标准来生产，否则你就是不合格。这就是设计和生产分离之后必须要进行的趋势。</p>
+<p>java中的接口也是如此，它就是一个规范，一个标准。设计人员负责制定标准，而开发人员必须在这标准下实现功能（设计人员不管开发人员如何实现）。接口的出现，使得软件开发分工更加明确，开发难度降低。</p>
+<h3 id="接口和抽象类"><a href="#接口和抽象类" class="headerlink" title="接口和抽象类"></a>接口和抽象类</h3><p>抽象类是固有存在的。是对对象的高度抽象，先有对象，才有抽象类。而接口（标准）是人为设计，是先设计出接口，才能产生对象（实体）。对象在被创造出来之前并不存在。先后顺序不一样。</p>
+<p>接口的所有设计都只为软件开发服务，使其开发更快，更合理。抽象类是固有存在的，是用来描述存在的对象的公共特征和行为。两者的概念差异很大。<br>在java中可能出现，使用抽象类和接口能够实现相同的效果，虽然效果<br>一样，但是本质是不一样的。</p>
+<p>对象-&gt;类-&gt;抽象类是从下往上抽象，接口-&gt;类（抽象类）-&gt;对象 是从上往下设计。有些人再设计的时候先设计的抽象类然后在创建对象，其实这是接口的设计思想。</p>
+<h3 id="接口的构成"><a href="#接口的构成" class="headerlink" title="接口的构成"></a>接口的构成</h3><p>java中的接口：只能定义常量，比如制定一个某型号的螺丝的标准，其半径，螺纹数都是固定的。生产必须按照这个标准生产，否则就是不合格。</p>
+<p>jdk1.7之前，只能定义public abstract 方法</p>
+<p>jdk1.8，可以定义默认方法和静态方法，可以写方法体。因为考虑到之前的实现接口的类已经使用，如果想扩展接口的功能，会导致所有实现该接口的类都要修改，很麻烦。而增加默认方法和静态方法就不会有这样的情况，功能可以增加，也不用修改其实现的类（ps：针对已经使用的接口，对于未使用的接口，使用抽象方法来扩展功能，因为这符合接口出现的初衷）</p>
+<p>jdk1.9接口中出现了私有方法。私有方法有个特点，只能在本类中使用，那么为什么接口要定义私有方法呢。这是对jdk1.8出现的静态方法和默认方法的扩充。我们可以把接口中的静态方法和默认方法中重复出现的代码抽取到私有方法中去。这样即不用暴露该方法接口，也可以更好的维护。</p>
+]]></content>
+  </entry>
+</search>
